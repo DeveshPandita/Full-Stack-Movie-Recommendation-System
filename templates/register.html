@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #141414; /* Dark background for Netflix-style */
+            color: #e5e5e5; /* Light text color for contrast */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .container {
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+            background: rgba(20, 20, 20, 0.9); /* Slightly transparent dark background */
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Stronger shadow for depth */
+        }
+        h1 {
+            text-align: center;
+            color: #e50914; /* Netflix red for heading */
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #e5e5e5; /* Light color for labels */
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #333; /* Darker border for input fields */
+            border-radius: 4px;
+            background-color: #333; /* Dark background for inputs */
+            color: #e5e5e5; /* Light text color */
+            margin-bottom: 15px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #e50914; /* Netflix red for button */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #f40612; /* Slightly brighter red on hover */
+        }
+        .link {
+            display: block;
+            text-align: center;
+            color: #e5e5e5; /* Light color for links */
+            margin-top: 10px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .link:hover {
+            text-decoration: underline;
+        }
+        .message {
+            color: #f40612; /* Error message color */
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Register</h1>
+        <form action="/register" method="post">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Register</button>
+        </form>
+        <!-- Display error messages here -->
+        {% if message %}
+            <p class="message">{{ message }}</p>
+        {% endif %}
+        <a href="/login" class="link">Login</a>
+    </div>
+</body>
+</html>

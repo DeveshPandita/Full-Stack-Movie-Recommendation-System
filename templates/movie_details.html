@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ movie.Title|default('Movie Details') }} - Movie Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #141414;
+            color: #e5e5e5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #000;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+        }
+        h1 {
+            color: #e50914;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+        }
+        .movie-details {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+        .movie-details img {
+            width: 250px;
+            height: 375px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #333;
+        }
+        .movie-info {
+            flex: 1;
+            margin-top: 10px;
+            text-align: left;
+        }
+        .movie-info h2 {
+            color: #e50914;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+        .movie-info div {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        .movie-info strong {
+            color: #e5e5e5;
+        }
+        .imdb-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #e5e5e5;
+            color: black;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .imdb-link:hover {
+            background-color: #d4d4d4;
+            transform: scale(1.05);
+        }
+        .back-button {
+            display: inline-block;
+            width: 200px;
+            padding: 10px;
+            background-color: #333;
+            color: #e5e5e5;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin: 20px auto;
+            display: block;
+        }
+        .back-button:hover {
+            background-color: #444;
+            transform: scale(1.05);
+        }
+        .review-section {
+            margin-top: 30px;
+            text-align: left;
+        }
+        .review-section h2 {
+            color: #e50914;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+        .review-form {
+            margin-bottom: 20px;
+        }
+        .review-form textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #333;
+            margin-bottom: 10px;
+            font-size: 1em;
+            background-color: #222;
+            color: #e5e5e5;
+        }
+        .review-form .star-rating {
+            display: flex;
+            font-size: 1.5em;
+            color: #e50914;
+            margin-bottom: 10px;
+            cursor: pointer;
+            direction: rtl;
+        }
+        .review-form .star-rating input[type="radio"] {
+            display: none;
+        }
+        .review-form .star-rating label {
+            color: #444;
+        }
+        .review-form .star-rating label:hover,
+        .review-form .star-rating label:hover ~ label {
+            color: #e50914;
+        }
+        .review-form .star-rating input:checked ~ label {
+            color: #e50914;
+        }
+        .review-form .star-rating input:checked ~ label ~ label {
+            color: #e50914;
+        }
+        .review-form button {
+            padding: 10px 15px;
+            background-color: #e50914;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .review-form button:hover {
+            background-color: #d40812;
+            transform: scale(1.05);
+        }
+        .review-item {
+            margin-bottom: 15px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+        .review-item strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .watchlist-button {
+            margin-top: 15px;
+            padding: 10px 15px;
+            background-color: #e50914;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .watchlist-button:hover {
+            background-color: #d40812;
+            transform: scale(1.05);
+        }
+        .stars {
+            font-size: 1.2em;
+            color: #e5e5e5;
+        }
+        .stars .fa-star {
+            color: #e50914;
+        }
+        .stars .fa-star.checked {
+            color: #e50914;
+        }
+        .stars .fa-star.unchecked {
+            color: #444;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ movie.Title|default('Movie Details') }}</h1>
+        <div class="movie-details">
+            <img src="{{ movie.Poster|default('default_poster.jpg') }}" alt="{{ movie.Title|default('Movie Poster') }}">
+            <div class="movie-info">
+                <h2>Details</h2>
+                <div><strong>Rating:</strong> {{ movie.Ratings[0].Value if movie.Ratings else 'N/A' }}</div>
+                <div><strong>Genre:</strong> {{ movie.Genre|default('N/A') }}</div>
+                <div><strong>Runtime:</strong> {{ movie.Runtime|default('N/A') }}</div>
+                <div><strong>Director:</strong> {{ movie.Director|default('N/A') }}</div>
+                <div><strong>Cast:</strong> {{ movie.Actors|default('N/A') }}</div>
+                <div><strong>Plot:</strong> {{ movie.Plot|default('N/A') }}</div>
+            </div>
+            <form id="watchlist-form" action="/add_to_watchlist" method="post" style="margin-top: 20px;">
+                <input type="hidden" name="movie_title" value="{{ movie.Title }}">
+                <button type="submit" class="watchlist-button">Add to Watchlist</button>
+                <a class="imdb-link" href="https://www.imdb.com/title/{{ movie.imdbID }}" target="_blank">
+                    More on IMDb
+                </a>
+            </form>
+        </div>
+        <a class="back-button" href="/?movieTitle={{ movie.Title|urlencode }}">Back to Recommendations</a>
+        
+        <!-- Review Section -->
+        <div class="review-section">
+            <h2>Reviews</h2>
+            <!-- Review Form -->
+            <form class="review-form" action="/submit_review" method="post">
+                <textarea name="comment" placeholder="Write your review here..." required></textarea>
+                <input type="hidden" name="movie_title" value="{{ movie.Title }}">
+                <div class="star-rating">
+                    <input type="radio" id="star5" name="rating" value="5" required>
+                    <label for="star5" class="fa fa-star"></label>
+                    <input type="radio" id="star4" name="rating" value="4">
+                    <label for="star4" class="fa fa-star"></label>
+                    <input type="radio" id="star3" name="rating" value="3">
+                    <label for="star3" class="fa fa-star"></label>
+                    <input type="radio" id="star2" name="rating" value="2">
+                    <label for="star2" class="fa fa-star"></label>
+                    <input type="radio" id="star1" name="rating" value="1">
+                    <label for="star1" class="fa fa-star"></label>
+                </div>
+                <button type="submit">Submit Review</button>
+            </form>            
+            
+            <!-- Display Reviews -->
+            {% if reviews %}
+                {% for review in reviews %}
+                    <div class="review-item">
+                        <strong>User {{ review.user.username }}:</strong>
+                        <div class="stars">
+                            {% for i in range(5) %}
+                                <i class="fa fa-star {{ 'checked' if i < review.rating else 'unchecked' }}"></i>
+                            {% endfor %}
+                        </div>
+                        <p>{{ review.comment }}</p>
+                    </div>
+                {% endfor %}
+        
+            {% else %}
+                <p>No reviews yet.</p>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('#watchlist-form').on('submit', function(e) {
+                e.preventDefault(); // Prevent the default form submission
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/add_to_watchlist',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        if (response.status === 'exists') {
+                            alert(response.message);
+                        } else if (response.status === 'success') {
+                            alert(response.message);
+                        }
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 401) { // Unauthorized - not logged in
+                            alert('You need to log in to add items to the watchlist.');
+                            window.location.href = '/login'; // Redirect to login page
+                        } else {
+                            alert('An error occurred while adding the movie to the watchlist.');
+                        }
+                    }
+                });
+            });
+        });
+
+    </script>
+</body>
+</html>
